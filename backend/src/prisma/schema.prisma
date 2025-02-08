@@ -14,11 +14,24 @@ datasource db {
 }
 
 model User {
-  id        String    @id @default(cuid())
-  email     String    @unique
-  name      String
-  role      String    @default("user")
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
+  id              String     @id @default(cuid())
+  email           String     @unique
+  name            String
+  role            String     @default("user")
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+  deletedAt       DateTime?
+  managerProjects Project[]
+}
+
+model Project {
+  id          String    @id @default(cuid())
+  name        String
+  description String
+  status      String
+  managerId   String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+  manager     User      @relation(fields: [managerId], references: [id])
 }
