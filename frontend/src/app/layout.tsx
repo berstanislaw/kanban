@@ -1,4 +1,3 @@
-import "@/styles/globals.css";
 import QueryProvider from "@/providers/queryProvider";
 import NextAuthSessionProvider from "@/providers/sessionProvider";
 

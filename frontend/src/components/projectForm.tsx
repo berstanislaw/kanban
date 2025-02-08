@@ -56,7 +56,6 @@ export const ProjectForm = ({
       queryClient.invalidateQueries({ queryKey: ["project"] });
       if (id) {
         setIsEditing!(false);
-        router.push(`/projects/${id}`);
       } else {
         router.push("/projects");
       }

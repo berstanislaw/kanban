@@ -1,7 +1,7 @@
+import { encrypt } from "@/utils/encrypt";
+import { jwtDecode } from "jwt-decode";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import Keycloak from "next-auth/providers/keycloak";
-import { jwtDecode } from "jwt-decode";
-import { encrypt } from "@/utils/encrypt";
 
 export const nextAuthOptions: NextAuthOptions = {
   providers: [
@@ -34,8 +34,8 @@ export const nextAuthOptions: NextAuthOptions = {
       }
     },
     async session({ session, token }) {
-      session.access_token = encrypt(token.access_token);
-      session.id_token = encrypt(token.id_token);
+      session.access_token = token.access_token;
+      session.id_token = token.id_token;
       session.roles = token.decodedToken.realm_access.roles;
 
       return session;

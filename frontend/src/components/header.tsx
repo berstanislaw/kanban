@@ -19,37 +19,48 @@ export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="bg-lightblue flex justify-between flex-row p-4 relative">
-      <div>Header</div>
+    <header
+      style={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        padding: "0 1rem",
+        height: "3rem",
+        borderBottom: "1px solid #ccc",
+      }}
+    >
+      <h1>Kanban</h1>
+
       {session && (
-        <div className="relative">
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="p-2 bg-transparent border-none cursor-pointer"
-          >
+        <div>
+          <button onClick={() => setIsOpen(!isOpen)}>
             <MoreVertical size={24} />
           </button>
+
+          {/* Menu Dropdown */}
           {isOpen && (
-            <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-300 shadow-lg rounded-md">
-              <button
-                onClick={() => router.push("/projects")}
-                className="block w-full text-left px-4 py-2 hover:bg-gray-100"
-              >
-                Projects
-              </button>
-              <button
-                onClick={() => router.push("/users")}
-                className="block w-full text-left px-4 py-2 hover:bg-gray-100"
-              >
-                Users
-              </button>
+            <div
+              style={{
+                position: "absolute",
+                right: "1rem",
+                top: "3.1rem",
+                width: "5rem",
+                height: "auto",
+                display: "flex",
+                flexDirection: "column",
+                backgroundColor: "#ccc",
+                border: "1px solid #ccc",
+                padding: "0.5rem",
+              }}
+            >
+              <button onClick={() => router.push("/projects")}>Projects</button>
+              <button onClick={() => router.push("/users")}>Users</button>
               <button
                 onClick={() => {
                   keycloakSessionLogout().then(() =>
                     signOut({ callbackUrl: "/" })
                   );
                 }}
-                className="block w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100"
               >
                 Logout
               </button>
@@ -57,6 +68,6 @@ export default function Header() {
           )}
         </div>
       )}
-    </div>
+    </header>
   );
 }
