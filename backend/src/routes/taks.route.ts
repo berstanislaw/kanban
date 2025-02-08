@@ -14,13 +14,14 @@ import {
   listTaskSchema,
   updateTaskSchema,
 } from "../schemas/task.schema";
+import { auth } from "../middlewares/auth";
 
 const taskRoutes = Router({ mergeParams: true });
 
-taskRoutes.get("/", validate(listTaskSchema), list);
-taskRoutes.get("/:id", validate(getTaskSchema), get);
-taskRoutes.post("/", validate(createTaskSchema), create);
-taskRoutes.put("/:id", validate(updateTaskSchema), update);
-taskRoutes.delete("/:id", validate(deleteTaskSchema), remove);
+taskRoutes.get("/", auth, validate(listTaskSchema), list);
+taskRoutes.get("/:id", auth, validate(getTaskSchema), get);
+taskRoutes.post("/", auth, validate(createTaskSchema), create);
+taskRoutes.put("/:id", auth, validate(updateTaskSchema), update);
+taskRoutes.delete("/:id", auth, validate(deleteTaskSchema), remove);
 
 export { taskRoutes };

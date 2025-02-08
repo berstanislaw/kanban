@@ -22,6 +22,16 @@ const getUser = async (id: string) => {
   return user;
 };
 
+const getUserByEmail = async (email: string) => {
+  const user = await prisma.user.findUnique({
+    where: {
+      email,
+    },
+  });
+
+  return user;
+};
+
 const createUser = async (data: {
   name: string;
   email: string;
@@ -30,7 +40,7 @@ const createUser = async (data: {
 }) => {
   const { email, password, name, role } = data;
 
-  await createKeycloakClient({ email: email, password: password });
+  await createKeycloakClient({ email, password, name });
 
   const user = await prisma.user.create({
     data: {
@@ -55,8 +65,8 @@ const updateUser = async (
 
   await updateKeycloakClient({
     oldEmail: persistedUser.email,
-    email: data.email!,
-    password: "",
+    email: data.email,
+    name: data.name,
   });
 
   const user = await prisma.user.update({
@@ -79,4 +89,11 @@ const deleteUser = async (id: string) => {
   });
 };
 
-export { listUsers, getUser, createUser, updateUser, deleteUser };
+export {
+  listUsers,
+  getUser,
+  getUserByEmail,
+  createUser,
+  updateUser,
+  deleteUser,
+};

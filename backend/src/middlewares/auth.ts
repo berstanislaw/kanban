@@ -1,5 +1,6 @@
-import jwt from "jsonwebtoken";
+import { jwtDecode } from "jwt-decode";
 import { NextFunction, Request, Response } from "express";
+import { getUserByEmail } from "../services/user.service";
 
 const auth = async (
   req: Request,
@@ -15,13 +16,16 @@ const auth = async (
     });
   }
 
-  const publicKey = process.env.KEYCLOAK_PUBLIC_KEY;
+  const decodedToken = jwtDecode(token);
+  const { email } = decodedToken;
 
-  // const decodedToken = jwt.verify(token, publicKey!, {
-  //   algorithms: ["RS256"],
-  // });
+  const user = await getUserByEmail(email);
 
-  // console.log(decodedToken);
+  if (!user) {
+    return res.status(401).json({
+      message: "Unauthorized",
+    });
+  }
 
   next();
 };

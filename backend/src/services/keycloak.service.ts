@@ -3,14 +3,16 @@ import { keycloakAdmin } from "../keycloak";
 const createKeycloakClient = async (data: {
   email: string;
   password: string;
+  name: string;
 }) => {
-  const { email, password } = data;
+  const { email, password, name } = data;
 
   const keycloakAdminClient = await keycloakAdmin();
   await keycloakAdminClient.users.create({
     realm: "kanban",
     username: email,
     email: email,
+    firstName: name,
     credentials: [
       {
         type: "password",
@@ -25,10 +27,11 @@ const createKeycloakClient = async (data: {
 
 const updateKeycloakClient = async (data: {
   oldEmail: string;
-  email: string;
-  password: string;
+  email?: string;
+  password?: string;
+  name?: string;
 }) => {
-  const { email, password, oldEmail } = data;
+  const { email, password, oldEmail, name } = data;
 
   const keycloakAdminClient = await keycloakAdmin();
   const keycloakUser = await keycloakAdminClient.users.find({
@@ -48,6 +51,7 @@ const updateKeycloakClient = async (data: {
     },
     {
       ...(email && { email, username: email }),
+      ...(name && { firstName: name }),
       ...(password && {
         credentials: [
           {

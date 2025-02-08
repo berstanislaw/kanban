@@ -18,9 +18,9 @@ import {
 const userRoutes = Router({ mergeParams: true });
 
 userRoutes.get("/", auth, list);
-userRoutes.get("/:id", validate(getUserSchema), get);
-userRoutes.post("/", validate(createUserSchema), create);
-userRoutes.put("/:id", validate(updateUserSchema), update);
-userRoutes.delete("/:id", validate(deleteUserSchema), remove);
+userRoutes.get("/:id", auth, validate(getUserSchema), get);
+userRoutes.post("/", auth, validate(createUserSchema), create);
+userRoutes.put("/:id", auth, validate(updateUserSchema), update);
+userRoutes.delete("/:id", auth, validate(deleteUserSchema), remove);
 
 export { userRoutes };

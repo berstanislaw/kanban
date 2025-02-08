@@ -13,13 +13,14 @@ import {
   getProjectSchema,
   updateProjectSchema,
 } from "../schemas/project.schema";
+import { auth } from "../middlewares/auth";
 
 const projectRoutes = Router({ mergeParams: true });
 
-projectRoutes.get("/", list);
-projectRoutes.get("/:id", validate(getProjectSchema), get);
-projectRoutes.post("/", validate(createProjectSchema), create);
-projectRoutes.put("/:id", validate(updateProjectSchema), update);
-projectRoutes.delete("/:id", validate(deleteProjectSchema), remove);
+projectRoutes.get("/", auth, list);
+projectRoutes.get("/:id", auth, validate(getProjectSchema), get);
+projectRoutes.post("/", auth, validate(createProjectSchema), create);
+projectRoutes.put("/:id", auth, validate(updateProjectSchema), update);
+projectRoutes.delete("/:id", auth, validate(deleteProjectSchema), remove);
 
 export { projectRoutes };
