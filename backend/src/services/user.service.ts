@@ -14,6 +14,10 @@ const getUser = async (id: string) => {
     },
   });
 
+  if (!user) {
+    throw new Error("Usuário não encontrado");
+  }
+
   return user;
 };
 
@@ -46,7 +50,13 @@ const updateUser = async (
     role?: string;
   }
 ) => {
-  await updateKeycloakClient({ email: data.email!, password: "" });
+  const persistedUser = await getUser(id);
+
+  await updateKeycloakClient({
+    oldEmail: persistedUser.email,
+    email: data.email!,
+    password: "",
+  });
 
   const user = await prisma.user.update({
     where: {
@@ -59,6 +69,8 @@ const updateUser = async (
 };
 
 const deleteUser = async (id: string) => {
+  await getUser(id);
+
   await prisma.user.delete({
     where: {
       id,

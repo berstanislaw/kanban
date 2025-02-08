@@ -24,15 +24,16 @@ const createKeycloakClient = async (data: {
 };
 
 const updateKeycloakClient = async (data: {
+  oldEmail: string;
   email: string;
   password: string;
 }) => {
-  const { email, password } = data;
+  const { email, password, oldEmail } = data;
 
   const keycloakAdminClient = await keycloakAdmin();
   const keycloakUser = await keycloakAdminClient.users.find({
     realm: "kanban",
-    email: email,
+    email: oldEmail,
   });
 
   const user = keycloakUser[0];
@@ -46,7 +47,7 @@ const updateKeycloakClient = async (data: {
       id: user.id,
     },
     {
-      ...(email && { email }),
+      ...(email && { email, username: email }),
       ...(password && {
         credentials: [
           {
