@@ -1,3 +1,4 @@
+import QueryProvider from "@/providers/queryProvider";
 import NextAuthSessionProvider from "@/providers/sessionProvider";
 
 export const metadata = {
@@ -13,7 +14,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <NextAuthSessionProvider>{children}</NextAuthSessionProvider>
+        <NextAuthSessionProvider>
+          <QueryProvider>{children}</QueryProvider>
+        </NextAuthSessionProvider>
       </body>
     </html>
   );
