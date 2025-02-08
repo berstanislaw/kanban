@@ -50,7 +50,7 @@ const updateKeycloakClient = async (data: {
       id: user.id,
     },
     {
-      ...(email && { email, username: email }),
+      ...(email && { email }),
       ...(name && { firstName: name }),
       ...(password && {
         credentials: [

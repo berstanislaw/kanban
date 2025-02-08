@@ -27,6 +27,7 @@ const errorHandler = async (
   res: Response,
   next: NextFunction
 ): Promise<any> => {
+  console.error(err);
   if (err instanceof PrismaClientKnownRequestError) {
     const error = handlePrismaError(err);
 
