@@ -26,19 +26,14 @@ const errorHandler = async (
   res: Response,
   next: NextFunction
 ): Promise<any> => {
-  if (res.headersSent) {
-    return next(err);
-  }
-
-  if (err instanceof PrismaClientKnownRequestError) {
-    const error = handlePrismaError(err);
-
-    return res.status(400).json(error);
-  }
+  console.log("ta entrando aqui");
 
   console.error(err.stack);
-
-  res.status(502).json({ error: err.stack });
+  res.status(500).json({
+    success: false,
+    message: "Something went wrong!",
+    error: process.env.NODE_ENV === "development" ? err.message : undefined,
+  });
 };
 
 export { errorHandler };

@@ -26,6 +26,10 @@ const getProject = async (id: string) => {
     },
   });
 
+  if (!project) {
+    throw new Error("Project not found");
+  }
+
   return project;
 };
 
@@ -51,6 +55,8 @@ const updateProject = async (
     managerId?: string;
   }
 ) => {
+  await getProject(id);
+
   const project = await prisma.project.update({
     where: {
       id,
@@ -62,6 +68,8 @@ const updateProject = async (
 };
 
 const deleteProject = async (id: string) => {
+  await getProject(id);
+
   await prisma.project.delete({
     where: {
       id,

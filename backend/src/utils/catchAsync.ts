@@ -1,10 +1,11 @@
 import { NextFunction, Request, Response } from "express";
 
 const catchAsync =
-  (action: any) => async (req: Request, res: Response, next: NextFunction) => {
+  (fn: any) => async (req: Request, res: Response, next: NextFunction) => {
     try {
-      await action(req, res, next);
+      await fn(req, res, next);
     } catch (error) {
+      console.log("ta entrando");
       next(error);
     }
   };

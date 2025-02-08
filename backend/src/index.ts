@@ -1,4 +1,4 @@
-import express, { Response } from "express";
+import express from "express";
 import { routes } from "./routes";
 import { errorHandler } from "./utils/errorHandler";
 

@@ -17,6 +17,10 @@ const getTask = async (id: string) => {
     },
   });
 
+  if (!task) {
+    throw new Error("Task not found");
+  }
+
   return task;
 };
 
@@ -43,6 +47,8 @@ const updateTask = async (
     assignedTo: string;
   }
 ) => {
+  await getTask(id);
+
   const task = await prisma.task.update({
     where: {
       id,
@@ -54,13 +60,13 @@ const updateTask = async (
 };
 
 const deleteTask = async (id: string) => {
-  const task = await prisma.task.delete({
+  await getTask(id);
+
+  await prisma.task.delete({
     where: {
       id,
     },
   });
-
-  return task;
 };
 
 export { listTask, getTask, createTask, updateTask, deleteTask };

@@ -1,4 +1,5 @@
 import { prisma } from "../prisma";
+import { AppError } from "../utils/error";
 import { createKeycloakClient, updateKeycloakClient } from "./keycloak.service";
 
 const listUsers = async () => {
@@ -15,7 +16,7 @@ const getUser = async (id: string) => {
   });
 
   if (!user) {
-    throw new Error("Usuário não encontrado");
+    throw new AppError("Usuário não encontrado", 404);
   }
 
   return user;
