@@ -28,4 +28,33 @@ const createUser = async (data: {
   return user;
 };
 
-export { listUsers, getUser, createUser };
+const updateUser = async (
+  id: string,
+  data: {
+    name?: string;
+    email?: string;
+    role?: string;
+  }
+) => {
+  const user = await prisma.user.update({
+    where: {
+      id,
+    },
+    data,
+  });
+
+  return user;
+};
+
+const deleteUser = async (id: string) => {
+  await prisma.user.update({
+    where: {
+      id,
+    },
+    data: {
+      deletedAt: new Date(),
+    },
+  });
+};
+
+export { listUsers, getUser, createUser, updateUser, deleteUser };

@@ -1,5 +1,12 @@
 import { Request, Response } from "express";
-import { createUser, getUser, listUsers } from "../services/user.service";
+import {
+  createUser,
+  deleteUser,
+  getUser,
+  listUsers,
+  updateUser,
+} from "../services/user.service";
+import { catchAsync } from "../utils/catchAsync";
 
 const list = async (req: Request, res: Response) => {
   const users = await listUsers();
@@ -15,15 +22,43 @@ const get = async (req: Request<{ id: string }>, res: Response) => {
   res.json(user);
 };
 
-const create = async (
-  req: Request<{}, {}, { name: string; email: string; role: string }>,
-  res: Response
-) => {
-  const { name, email, role } = req.body;
+const create = catchAsync(
+  async (
+    req: Request<{}, {}, { name: string; email: string; role: string }>,
+    res: Response
+  ) => {
+    const { name, email, role } = req.body;
 
-  const user = await createUser({ name, email, role });
+    const user = await createUser({ name, email, role });
 
-  res.json(user);
+    res.json(user);
+  }
+);
+
+const update = catchAsync(
+  async (
+    req: Request<
+      { id: string },
+      {},
+      { name?: string; email?: string; role?: string }
+    >,
+    res: Response
+  ) => {
+    const { id } = req.params;
+    const { name, email, role } = req.body;
+
+    const user = await updateUser(id, { name, email, role });
+
+    res.json(user);
+  }
+);
+
+const softDelete = async (req: Request<{ id: string }>, res: Response) => {
+  const { id } = req.params;
+
+  await deleteUser(id);
+
+  res.json({ message: "User deleted" });
 };
 
-export { list, get, create };
+export { list, get, create, update, softDelete };
