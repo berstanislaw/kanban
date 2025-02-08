@@ -5,7 +5,6 @@ const listProject = async (filter: { name?: string; status?: string }) => {
 
   const projects = await prisma.project.findMany({
     where: {
-      deletedAt: null,
       name: {
         contains: name,
       },
@@ -20,7 +19,6 @@ const getProject = async (id: string) => {
   const project = await prisma.project.findUnique({
     where: {
       id,
-      deletedAt: null,
     },
     include: {
       manager: true,
@@ -56,7 +54,6 @@ const updateProject = async (
   const project = await prisma.project.update({
     where: {
       id,
-      deletedAt: null,
     },
     data,
   });
@@ -65,12 +62,9 @@ const updateProject = async (
 };
 
 const deleteProject = async (id: string) => {
-  await prisma.project.update({
+  await prisma.project.delete({
     where: {
       id,
-    },
-    data: {
-      deletedAt: new Date(),
     },
   });
 };

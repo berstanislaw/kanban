@@ -24,12 +24,14 @@ const get = async (req: Request<{ id: string }>, res: Response) => {
 
 const create = catchAsync(
   async (
-    req: Request<{}, {}, { name: string; email: string; role: string }>,
+    req: Request<
+      {},
+      {},
+      { name: string; email: string; role: string; password: string }
+    >,
     res: Response
   ) => {
-    const { name, email, role } = req.body;
-
-    const user = await createUser({ name, email, role });
+    const user = await createUser(req.body);
 
     res.json(user);
   }

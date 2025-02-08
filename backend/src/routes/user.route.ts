@@ -6,10 +6,11 @@ import {
   update,
   remove,
 } from "../controllers/user.controller";
+import { auth } from "../middlewares/auth";
 
 const userRoutes = Router({ mergeParams: true });
 
-userRoutes.get("/", list);
+userRoutes.get("/", auth, list);
 userRoutes.get("/:id", get);
 userRoutes.post("/", create);
 userRoutes.put("/:id", update);

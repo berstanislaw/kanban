@@ -4,7 +4,6 @@ const listTask = async (projectId: string) => {
   const tasks = await prisma.task.findMany({
     where: {
       projectId,
-      deletedAt: null,
     },
   });
 
@@ -15,7 +14,6 @@ const getTask = async (id: string) => {
   const task = await prisma.task.findUnique({
     where: {
       id,
-      deletedAt: null,
     },
   });
 
@@ -48,7 +46,6 @@ const updateTask = async (
   const task = await prisma.task.update({
     where: {
       id,
-      deletedAt: null,
     },
     data,
   });
@@ -57,13 +54,9 @@ const updateTask = async (
 };
 
 const deleteTask = async (id: string) => {
-  const task = await prisma.task.update({
+  const task = await prisma.task.delete({
     where: {
       id,
-      deletedAt: null,
-    },
-    data: {
-      deletedAt: new Date(),
     },
   });
 
