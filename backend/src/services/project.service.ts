@@ -22,6 +22,10 @@ const getProject = async (id: string) => {
       id,
       deletedAt: null,
     },
+    include: {
+      manager: true,
+      tasks: true,
+    },
   });
 
   return project;
