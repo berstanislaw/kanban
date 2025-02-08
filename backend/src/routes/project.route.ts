@@ -4,7 +4,7 @@ import {
   get,
   list,
   update,
-  softDelete,
+  remove,
 } from "../controllers/project.controller";
 
 const projectRoutes = Router({ mergeParams: true });
@@ -13,6 +13,6 @@ projectRoutes.get("/", list);
 projectRoutes.get("/:id", get);
 projectRoutes.post("/", create);
 projectRoutes.put("/:id", update);
-projectRoutes.delete("/:id", softDelete);
+projectRoutes.delete("/:id", remove);
 
 export { projectRoutes };

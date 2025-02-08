@@ -53,7 +53,7 @@ const update = catchAsync(
   }
 );
 
-const softDelete = async (req: Request<{ id: string }>, res: Response) => {
+const remove = async (req: Request<{ id: string }>, res: Response) => {
   const { id } = req.params;
 
   await deleteUser(id);
@@ -61,4 +61,4 @@ const softDelete = async (req: Request<{ id: string }>, res: Response) => {
   res.json({ message: "User deleted" });
 };
 
-export { list, get, create, update, softDelete };
+export { list, get, create, update, remove };

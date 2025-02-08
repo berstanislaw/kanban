@@ -65,13 +65,13 @@ const update = catchAsync(
   }
 );
 
-const softDelete = catchAsync(
+const remove = catchAsync(
   async (req: Request<{ id: string }, {}, {}>, res: Response) => {
     const { id } = req.params;
-    const project = await deleteProject(id);
+    await deleteProject(id);
 
-    res.send(project);
+    res.send({ message: "Project deleted" });
   }
 );
 
-export { list, get, create, update, softDelete };
+export { list, get, create, update, remove };
