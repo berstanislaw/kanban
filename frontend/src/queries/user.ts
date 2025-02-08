@@ -1,4 +1,3 @@
-import { AxiosResponse } from "axios";
 import { axiosInstance } from ".";
 
 export interface User {
@@ -8,7 +7,10 @@ export interface User {
   role: string;
 }
 
-const getUsers = async (): Promise<AxiosResponse<User[]>> =>
-  await axiosInstance.get<User[]>("users/");
+const getUsers = async (): Promise<User[]> =>{
+  const response = await axiosInstance.get<User[]>("users/");
+
+  return response.data;
+}
 
 export { getUsers };

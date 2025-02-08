@@ -1,5 +1,6 @@
 "use client";
 
+import Header from "@/components/header";
 import { getProjects } from "@/queries/projects";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
@@ -18,6 +19,7 @@ export default function Projects() {
 
   return (
     <div>
+      <Header />
       <Link href={"projects/new"}>Novo Projeto</Link>
       {projects?.map((project) => {
         return (

@@ -103,8 +103,8 @@ export const ProjectForm = ({
           <option value="">
             {isPending ? "Carregando" : "Selecione um manager"}
           </option>
-          {!isPending &&
-            users?.data.map((user: User) => (
+          {users &&
+            users?.map((user: User) => (
               <option key={user.id} value={user.id}>
                 {user.name}
               </option>
@@ -122,7 +122,14 @@ export const ProjectForm = ({
         {errors.status && <p>{errors.status.message}</p>}
       </div>
 
-      <button type="submit">{id ? "Editar Projeto" : "Criar Projeto"}</button>
+      <div>
+        <button type="submit">{id ? "Editar Projeto" : "Criar Projeto"}</button>
+        <button
+          onClick={() => (id ? setIsEditing!(false) : router.push("/projects"))}
+        >
+          Cancelar
+        </button>
+      </div>
     </form>
   );
 };
