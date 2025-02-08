@@ -5,7 +5,6 @@ const catchAsync =
     try {
       await fn(req, res, next);
     } catch (error) {
-      console.log("ta entrando");
       next(error);
     }
   };

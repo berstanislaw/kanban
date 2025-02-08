@@ -8,19 +8,19 @@ import {
 } from "../services/user.service";
 import { catchAsync } from "../utils/catchAsync";
 
-const list = async (req: Request, res: Response) => {
+const list = catchAsync(async (req: Request, res: Response) => {
   const users = await listUsers();
 
   res.json(users);
-};
+});
 
-const get = async (req: Request<{ id: string }>, res: Response) => {
+const get = catchAsync(async (req: Request<{ id: string }>, res: Response) => {
   const { id } = req.params;
 
   const user = await getUser(id);
 
   res.json(user);
-};
+});
 
 const create = catchAsync(
   async (
@@ -55,12 +55,14 @@ const update = catchAsync(
   }
 );
 
-const remove = async (req: Request<{ id: string }>, res: Response) => {
-  const { id } = req.params;
+const remove = catchAsync(
+  async (req: Request<{ id: string }>, res: Response) => {
+    const { id } = req.params;
 
-  await deleteUser(id);
+    await deleteUser(id);
 
-  res.json({ message: "User deleted" });
-};
+    res.json({ message: "User deleted" });
+  }
+);
 
 export { list, get, create, update, remove };

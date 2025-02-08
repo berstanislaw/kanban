@@ -1,23 +1,24 @@
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { NextFunction, Request, Response } from "express";
+import { AppError } from "./error";
 
-const handlePrismaError = (err: PrismaClientKnownRequestError) => {
+const handlePrismaError = (err: PrismaClientKnownRequestError): AppError => {
   switch (err.code) {
     case "P2002":
       // handling duplicate key errors
-      return {
-        error: { message: `Duplicate field value: ${err.meta?.target}` },
-      };
+      return new AppError(`Duplicate field value: ${err.meta?.target}`, 409);
     case "P2014":
       // handling invalid id errors
-      return { error: { message: `Invalid ID: ${err.meta?.target}` } };
+      return new AppError(`Invalid ID: ${err.meta?.target}`, 422);
     case "P2003":
       // handling invalid data errors
-      return { error: { message: `Invalid input data: ${err.meta?.target}` } };
+      return new AppError(`Invalid input data: ${err.meta?.target}`, 422);
     default:
       // handling all other errors
-      return { error: { message: `Something went wrong: ${err.message}` } };
+      new AppError(`Something went wrong: ${err.message}`, 500);
   }
+
+  return new AppError("Internal server error", 500);
 };
 
 const errorHandler = async (
@@ -26,14 +27,13 @@ const errorHandler = async (
   res: Response,
   next: NextFunction
 ): Promise<any> => {
-  console.log("ta entrando aqui");
+  if (err instanceof PrismaClientKnownRequestError) {
+    const error = handlePrismaError(err);
 
-  console.error(err.stack);
-  res.status(500).json({
-    success: false,
-    message: "Something went wrong!",
-    error: process.env.NODE_ENV === "development" ? err.message : undefined,
-  });
+    return res.status(error.status).json({ error: { message: error.message } });
+  }
+
+  res.status(err.status).json({ error: { message: err.message } });
 };
 
 export { errorHandler };
