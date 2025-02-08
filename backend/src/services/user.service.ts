@@ -1,7 +1,11 @@
 import { prisma } from "../prisma";
 
 const listUsers = async () => {
-  const users = await prisma.user.findMany();
+  const users = await prisma.user.findMany({
+    where: {
+      deletedAt: null,
+    },
+  });
 
   return users;
 };
@@ -10,6 +14,7 @@ const getUser = async (id: string) => {
   const user = await prisma.user.findUnique({
     where: {
       id,
+      deletedAt: null,
     },
   });
 
@@ -39,6 +44,7 @@ const updateUser = async (
   const user = await prisma.user.update({
     where: {
       id,
+      deletedAt: null,
     },
     data,
   });
