@@ -6,13 +6,21 @@ import {
   update,
   remove,
 } from "../controllers/task.controller";
+import { validate } from "../middlewares/validate";
+import {
+  createTaskSchema,
+  deleteTaskSchema,
+  getTaskSchema,
+  listTaskSchema,
+  updateTaskSchema,
+} from "../schemas/task.schema";
 
 const taskRoutes = Router({ mergeParams: true });
 
-taskRoutes.get("/", list);
-taskRoutes.get("/:id", get);
-taskRoutes.post("/", create);
-taskRoutes.put("/:id", update);
-taskRoutes.delete("/:id", remove);
+taskRoutes.get("/", validate(listTaskSchema), list);
+taskRoutes.get("/:id", validate(getTaskSchema), get);
+taskRoutes.post("/", validate(createTaskSchema), create);
+taskRoutes.put("/:id", validate(updateTaskSchema), update);
+taskRoutes.delete("/:id", validate(deleteTaskSchema), remove);
 
 export { taskRoutes };
